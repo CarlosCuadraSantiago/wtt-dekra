@@ -10,30 +10,243 @@ html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$cyan-palette,
+        primary: mat.$green-palette,
         tertiary: mat.$orange-palette,
       ),
       typography: Roboto,
       density: 0,
     )
   );
+
+  // Base color override (#008143) — aplica a botones y sistema primario
+  --mat-sys-primary: #008143;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #a8f5c2;
+  --mat-sys-on-primary-container: #00210a;
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
   color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
   height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+
+// base color — botones y texto primario
+a {
+  color: #008143;
+}
+
+.mat-mdc-unelevated-button:not(:disabled),
+.mat-mdc-raised-button:not(:disabled),
+.mat-mdc-filled-button:not(:disabled) {
+  --mdc-filled-button-container-color: #008143;
+  --mdc-filled-button-label-text-color: #fff;
+  --mat-filled-button-container-color: #008143;
+}
+
+.mat-mdc-button:not(:disabled),
+.mat-mdc-outlined-button:not(:disabled) {
+  --mdc-text-button-label-text-color: #008143;
+  --mat-text-button-label-text-color: #008143;
+}
+
+.mat-mdc-icon-button:not(:disabled) {
+  --mdc-icon-button-icon-color: #008143;
+}
+
+.snack--error {
+  --mdc-snackbar-container-color: #b3261e;
+  --mat-snack-bar-container-color: #b3261e;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.snack--error .mdc-snackbar__surface {
+  background-color: #b3261e !important;
+}
+
+.snack--success {
+  --mdc-snackbar-container-color: #008143;
+  --mat-snack-bar-container-color: #008143;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.snack--success .mdc-snackbar__surface {
+  background-color: #008143 !important;
+}
+
+// dark mode
+html.dark-theme {
+  color-scheme: dark;
+
+  .mat-mdc-card {
+    --mdc-elevated-card-container-color: #1e1e1e;
+    --mdc-outlined-card-container-color: #1e1e1e;
+    --mdc-outlined-card-outline-color: #333;
+    background: #1e1e1e !important;
+    color: #e0e0e0;
+  }
+
+  .mat-mdc-table,
+  .mat-mdc-paginator {
+    background: #1e1e1e !important;
+    color: #e0e0e0;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    color: #e0e0e0;
+    border-bottom-color: #333 !important;
+  }
+
+  .mat-mdc-header-row {
+    background: #1e1e1e;
+  }
+
+  .mat-mdc-form-field {
+    --mat-form-field-outlined-outline-color: #555;
+    --mat-form-field-label-text-color: #aaa;
+    --mat-form-field-input-text-color: #e0e0e0;
+    --mat-form-field-input-text-placeholder-color: #888;
+    --mat-form-field-outlined-hover-outline-color: #8a8a8a;
+    --mat-form-field-outlined-focus-outline-color: #008143;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  // Hover light en dark — outline y fondo más claro que #1e1e1e
+  .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__leading,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__notch,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__trailing {
+    border-color: #8a8a8a !important;
+  }
+
+  .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+    background: #2a2a2a !important;
+  }
+
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: #008143 !important;
+  }
+
+  // Inputs — texto claro en dark (matInput + nativos)
+  .mat-mdc-input-element,
+  input.mat-mdc-input-element,
+  textarea.mat-mdc-input-element {
+    color: #e0e0e0 !important;
+    caret-color: #e0e0e0;
+  }
+
+  .mat-mdc-input-element::placeholder,
+  input::placeholder,
+  textarea::placeholder {
+    color: #888 !important;
+  }
+
+  // Override para variables MDC que pintan el texto del input en negro
+  .mat-mdc-form-field-input-control.mat-mdc-form-field-input-control {
+    color: #e0e0e0 !important;
+  }
+
+  .mat-mdc-checkbox label {
+    color: #e0e0e0;
+  }
+
+  // Fix para autofill oscuro
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #e0e0e0 !important;
+    caret-color: #e0e0e0;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  // Botón create/update deshabilitado — mantener estilo grisáceo visible en dark
+  .mat-mdc-unelevated-button:disabled,
+  .mat-mdc-raised-button:disabled,
+  .mat-mdc-filled-button:disabled,
+  button[matButton]:disabled,
+  a[matButton]:disabled {
+    --mdc-filled-button-disabled-container-color: #4a4a4a;
+    --mdc-filled-button-disabled-label-text-color: #c0c0c0;
+    --mat-filled-button-disabled-container-color: #4a4a4a;
+    --mat-filled-button-disabled-label-text-color: #c0c0c0;
+    opacity: 1 !important;
+  }
+
+  // Forzar fondo/texto visibles para filled deshabilitado en dark
+  .mat-mdc-filled-button:disabled,
+  .mat-mdc-unelevated-button:disabled,
+  .user-form__submit:disabled {
+    background-color: #4a4a4a !important;
+    color: #c0c0c0 !important;
+    border: 1px solid #5a5a5a !important;
+  }
+
+  .mat-mdc-button:disabled,
+  .mat-mdc-outlined-button:disabled {
+    --mdc-text-button-disabled-label-text-color: #7a7a7a;
+    --mat-text-button-disabled-label-text-color: #7a7a7a;
+    opacity: 1 !important;
+  }
+
+  // Iconos globales en dark — blanco para máximo énfasis/contraste (fix menú/back/theme)
+  .mat-mdc-icon-button:not(:disabled) {
+    --mdc-icon-button-icon-color: #ffffff;
+    --mat-icon-button-icon-color: #ffffff;
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-icon-button:not(:disabled) .mat-icon,
+  .mat-mdc-icon-button:not(:disabled) mat-icon {
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-icon-button:not(:disabled):hover {
+    --mdc-icon-button-state-layer-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .mat-mdc-icon-button:not(:disabled):focus-visible {
+    outline: 2px solid #a8f5c2;
+    outline-offset: 2px;
+  }
+
+  // Paginador — flechas visibles en dark (habilitadas claras, deshabilitadas gris medio)
+  .mat-mdc-paginator .mat-mdc-icon-button:not(:disabled) {
+    --mdc-icon-button-icon-color: #e0e0e0;
+    color: #e0e0e0 !important;
+  }
+
+  .mat-mdc-paginator .mat-mdc-icon-button:not(:disabled) .mat-icon {
+    color: #e0e0e0 !important;
+  }
+
+  .mat-mdc-paginator .mat-mdc-icon-button:disabled {
+    --mdc-icon-button-disabled-icon-color: #9e9e9e;
+    --mat-icon-button-disabled-icon-color: #9e9e9e;
+    opacity: 1 !important;
+  }
+
+  .mat-mdc-paginator .mat-mdc-icon-button:disabled .mat-icon,
+  .mat-mdc-paginator .mat-mdc-icon-button:disabled mat-icon {
+    color: #9e9e9e !important;
+    opacity: 1 !important;
+  }
+
+  .mat-mdc-paginator .mat-mdc-paginator-range-label,
+  .mat-mdc-paginator .mat-mdc-paginator-page-size-label {
+    color: #e0e0e0 !important;
+  }
+}
