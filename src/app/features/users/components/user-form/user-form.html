@@ -2,7 +2,7 @@
 
 <form class="user-form" (submit)="onSubmit(); $event.preventDefault()" novalidate>
   <div class="user-form__grid">
-    <mat-form-field class="user-form__field" appearance="outline">
+    <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
       <mat-label>Username</mat-label>
       <input matInput [formField]="f.username" autocomplete="username" />
       @for (error of f.username().errors(); track error.message) {
@@ -10,7 +10,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field class="user-form__field" appearance="outline">
+    <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
       <mat-label>Name</mat-label>
       <input matInput [formField]="f.name" autocomplete="given-name" />
       @for (error of f.name().errors(); track error.message) {
@@ -18,7 +18,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field class="user-form__field" appearance="outline">
+    <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
       <mat-label>Surnames</mat-label>
       <input matInput [formField]="f.surnames" autocomplete="family-name" />
       @for (error of f.surnames().errors(); track error.message) {
@@ -26,7 +26,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field class="user-form__field" appearance="outline">
+    <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
       <mat-label>Email</mat-label>
       <input matInput type="email" [formField]="f.email" autocomplete="email" />
       @for (error of f.email().errors(); track error.message) {
@@ -34,7 +34,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field class="user-form__field" appearance="outline">
+    <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
       <mat-label>Password @if (!initialUser()) { * }</mat-label>
       <input matInput type="password" [formField]="f.password" autocomplete="new-password" />
       @for (error of f.password().errors(); track error.message) {
@@ -45,7 +45,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field class="user-form__field user-form__field--small" appearance="outline">
+    <mat-form-field class="user-form__field user-form__field--small" appearance="outline" subscriptSizing="dynamic">
       <mat-label>Age</mat-label>
       <input matInput type="number" [formField]="f.age" />
       @for (error of f.age().errors(); track error.message) {

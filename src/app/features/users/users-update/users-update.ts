@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, ElementRef, OnDestroy, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, ElementRef, OnDestroy, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,6 +27,7 @@ export class UsersUpdate implements OnInit, AfterViewInit, OnDestroy {
 
   private readonly usersService = inject(UsersService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
   private observer?: IntersectionObserver;
   private scrollHandler?: () => void;
 
@@ -47,7 +48,8 @@ export class UsersUpdate implements OnInit, AfterViewInit, OnDestroy {
     this.usersService.list().then((users) => {
       this.allUsers.set(users);
       this.loading.set(false);
-      queueMicrotask(() => this.observeSentinel());
+      this.cdr.markForCheck();
+      setTimeout(() => this.observeSentinel(), 0);
     });
 
     this.searchControl.valueChanges
@@ -55,7 +57,8 @@ export class UsersUpdate implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((term) => {
         this.searchTerm.set(term);
         this.visibleCount.set(PAGE_SIZE);
-        queueMicrotask(() => this.observeSentinel());
+        this.cdr.markForCheck();
+        setTimeout(() => this.observeSentinel(), 0);
       });
   }
 
@@ -74,8 +77,9 @@ export class UsersUpdate implements OnInit, AfterViewInit, OnDestroy {
   loadMore(): void {
     if (!this.hasMore()) return;
     this.visibleCount.update((c) => Math.min(c + PAGE_SIZE, this.filteredUsers().length));
-    // sentinel moves down after new cards rendered – defer until DOM updates
-    queueMicrotask(() => this.observeSentinel());
+    this.cdr.markForCheck();
+    // sentinel moves down after new cards rendered – defer until DOM updates (zoneless: macrotask)
+    setTimeout(() => this.observeSentinel(), 0);
   }
 
   private getScrollRoot(): HTMLElement | null {
@@ -86,7 +90,15 @@ export class UsersUpdate implements OnInit, AfterViewInit, OnDestroy {
   private observeSentinel(): void {
     this.observer?.disconnect();
     const el = this.sentinel?.nativeElement;
-    if (!el) return;
+    if (!el) {
+      // zoneless: DOM aún no renderizado tras markForCheck → reintenta en siguiente frame
+      if (!this.loading() && typeof requestAnimationFrame !== 'undefined') {
+        requestAnimationFrame(() => this.observeSentinel());
+      } else {
+        setTimeout(() => this.observeSentinel(), 50);
+      }
+      return;
+    }
     if (typeof IntersectionObserver === 'undefined') {
       // fallback: check on scroll
       const root = this.getScrollRoot();

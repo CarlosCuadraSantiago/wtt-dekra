@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, ElementRef, OnDestroy, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, ElementRef, OnDestroy, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +34,7 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
   private observer?: IntersectionObserver;
   private scrollHandler?: () => void;
 
@@ -54,7 +55,8 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
     this.usersService.list().then((users) => {
       this.allUsers.set(users);
       this.loading.set(false);
-      queueMicrotask(() => this.observeSentinel());
+      this.cdr.markForCheck();
+      setTimeout(() => this.observeSentinel(), 0);
     });
 
     this.searchControl.valueChanges
@@ -62,7 +64,8 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((term) => {
         this.searchTerm.set(term);
         this.visibleCount.set(PAGE_SIZE);
-        queueMicrotask(() => this.observeSentinel());
+        this.cdr.markForCheck();
+        setTimeout(() => this.observeSentinel(), 0);
       });
   }
 
@@ -97,6 +100,7 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
 
   private async deleteUser(user: User): Promise<void> {
     this.deletingId.set(user.id);
+    this.cdr.markForCheck();
     try {
       await this.usersService.delete(user.id);
       this.allUsers.update((all) => all.filter((u) => u.id !== user.id));
@@ -104,13 +108,14 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
       if (this.visibleCount() > this.filteredUsers().length) {
         this.visibleCount.set(this.filteredUsers().length);
       }
+      this.cdr.markForCheck();
       this.snackBar.open(`User ${user.username} deleted`, 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
         panelClass: ['snack--success'],
       });
-      queueMicrotask(() => this.observeSentinel());
+      setTimeout(() => this.observeSentinel(), 0);
     } catch {
       this.snackBar.open('Failed to delete user', 'Close', {
         duration: 4000,
@@ -120,13 +125,15 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
       });
     } finally {
       this.deletingId.set(null);
+      this.cdr.markForCheck();
     }
   }
 
   loadMore(): void {
     if (!this.hasMore()) return;
     this.visibleCount.update((c) => Math.min(c + PAGE_SIZE, this.filteredUsers().length));
-    queueMicrotask(() => this.observeSentinel());
+    this.cdr.markForCheck();
+    setTimeout(() => this.observeSentinel(), 0);
   }
 
   private getScrollRoot(): HTMLElement | null {
@@ -137,7 +144,14 @@ export class UsersDelete implements OnInit, AfterViewInit, OnDestroy {
   private observeSentinel(): void {
     this.observer?.disconnect();
     const el = this.sentinel?.nativeElement;
-    if (!el) return;
+    if (!el) {
+      if (!this.loading() && typeof requestAnimationFrame !== 'undefined') {
+        requestAnimationFrame(() => this.observeSentinel());
+      } else {
+        setTimeout(() => this.observeSentinel(), 50);
+      }
+      return;
+    }
     if (typeof IntersectionObserver === 'undefined') {
       const root = this.getScrollRoot();
       if (root) {
