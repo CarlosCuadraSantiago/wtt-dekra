@@ -1,0 +1,77 @@
+<article class="user-card" role="article" [attr.aria-label]="user().username">
+  <mat-card appearance="outlined" class="user-card__card">
+    <mat-card-header class="user-card__header">
+      <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
+        <mat-icon>person</mat-icon>
+      </div>
+      <mat-card-title class="user-card__username">{{ user().username }}</mat-card-title>
+      <mat-card-subtitle class="user-card__subtitle">
+        <mat-icon
+          class="user-card__status-icon"
+          [class.user-card__status-icon--active]="user().active"
+          [class.user-card__status-icon--inactive]="!user().active"
+          [attr.aria-label]="user().active ? 'Active' : 'Inactive'"
+          >{{ user().active ? 'check_circle' : 'cancel' }}</mat-icon
+        >
+        <span>{{ user().active ? 'Active' : 'Inactive' }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="user-card__content">
+      <ul class="user-card__info" aria-label="User details">
+        <li class="user-card__info-item">
+          <mat-icon class="user-card__info-icon" aria-hidden="true">badge</mat-icon>
+          <span class="user-card__info-text">{{ user().name }} {{ user().surnames }}</span>
+        </li>
+        <li class="user-card__info-item">
+          <mat-icon class="user-card__info-icon" aria-hidden="true">mail</mat-icon>
+          <span class="user-card__info-text">{{ user().email }}</span>
+        </li>
+        <li class="user-card__info-item">
+          <mat-icon class="user-card__info-icon" aria-hidden="true">cake</mat-icon>
+          <span class="user-card__info-text">{{ user().age }} years</span>
+        </li>
+        @if (user().lastLogin) {
+          <li class="user-card__info-item">
+            <mat-icon class="user-card__info-icon" aria-hidden="true">schedule</mat-icon>
+            <span class="user-card__info-text">Last login {{ user().lastLogin?.toLocaleDateString() }}</span>
+          </li>
+        } @else {
+          <li class="user-card__info-item user-card__info-item--muted">
+            <mat-icon class="user-card__info-icon" aria-hidden="true">schedule</mat-icon>
+            <span class="user-card__info-text">Never logged in</span>
+          </li>
+        }
+      </ul>
+    </mat-card-content>
+
+    @if (mode() !== 'preview') {
+      <mat-card-actions class="user-card__actions">
+        @if (mode() === 'update') {
+          <a
+            mat-flat-button
+            class="user-card__action user-card__action--update"
+            [routerLink]="['/users', user().id, 'edit']"
+            [attr.aria-label]="'Update ' + user().username"
+          >
+            <mat-icon>edit</mat-icon>
+            Update
+          </a>
+        } @else if (mode() === 'delete') {
+          <button
+            mat-flat-button
+            type="button"
+            class="user-card__action user-card__action--delete"
+            (click)="deleteRequested.emit(user())"
+            [disabled]="deleting()"
+            [attr.aria-label]="'Delete ' + user().username"
+            [attr.aria-busy]="deleting()"
+          >
+            <mat-icon>delete</mat-icon>
+            {{ deleting() ? 'Deleting…' : 'Delete' }}
+          </button>
+        }
+      </mat-card-actions>
+    }
+  </mat-card>
+</article>

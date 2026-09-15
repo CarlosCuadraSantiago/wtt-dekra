@@ -1,0 +1,185 @@
+.user-card {
+  display: flex;
+  height: 100%;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  &__header {
+    padding-bottom: 0.5rem;
+  }
+
+  &__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    color: #008143;
+    border-radius: 50%;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__username {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+  }
+
+  &__subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+  }
+
+  &__status-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+
+    &--active {
+      color: #008143;
+    }
+
+    &--inactive {
+      color: #9e9e9e;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    padding-top: 0.25rem;
+  }
+
+  &__info {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    color: #424242;
+
+    &--muted {
+      color: #9e9e9e;
+    }
+  }
+
+  &__info-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #008143;
+    flex-shrink: 0;
+  }
+
+  &__info-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__actions {
+    padding: 0.75rem 1rem 1rem !important;
+    margin-top: auto;
+  }
+
+  &__action {
+    width: 100%;
+
+    &--update {
+      --mdc-filled-button-container-color: #f57c00 !important;
+      --mat-filled-button-container-color: #f57c00 !important;
+      --mat-button-filled-container-color: #f57c00 !important;
+      --mat-sys-primary: #f57c00 !important;
+      --mdc-filled-button-label-text-color: #fff !important;
+      --mat-filled-button-label-text-color: #fff !important;
+      --mat-button-filled-label-text-color: #fff !important;
+      --mat-sys-on-primary: #fff !important;
+
+      &:hover {
+        --mdc-filled-button-container-color: #ef6c00 !important;
+        --mat-filled-button-container-color: #ef6c00 !important;
+        --mat-button-filled-container-color: #ef6c00 !important;
+        --mat-sys-primary: #ef6c00 !important;
+      }
+    }
+
+    &--delete {
+      --mdc-filled-button-container-color: #d32f2f !important;
+      --mat-filled-button-container-color: #d32f2f !important;
+      --mat-button-filled-container-color: #d32f2f !important;
+      --mat-sys-primary: #d32f2f !important;
+      --mdc-filled-button-label-text-color: #fff !important;
+      --mat-filled-button-label-text-color: #fff !important;
+      --mat-button-filled-label-text-color: #fff !important;
+      --mat-sys-on-primary: #fff !important;
+
+      &:hover {
+        --mdc-filled-button-container-color: #b71c1c !important;
+        --mat-filled-button-container-color: #b71c1c !important;
+        --mat-button-filled-container-color: #b71c1c !important;
+        --mat-sys-primary: #b71c1c !important;
+      }
+    }
+  }
+
+  // Alta especificidad para vencer el verde global de styles.scss:42-48 y el fallback M3 var(--mat-sys-primary) de la captura
+  &__action--update.mat-mdc-unelevated-button:not(:disabled),
+  &__action--update.mat-mdc-filled-button:not(:disabled) {
+    --mdc-filled-button-container-color: #f57c00 !important;
+    --mat-filled-button-container-color: #f57c00 !important;
+    --mat-button-filled-container-color: #f57c00 !important;
+    --mat-sys-primary: #f57c00 !important;
+  }
+
+  &__action--delete.mat-mdc-unelevated-button:not(:disabled),
+  &__action--delete.mat-mdc-filled-button:not(:disabled) {
+    --mdc-filled-button-container-color: #d32f2f !important;
+    --mat-filled-button-container-color: #d32f2f !important;
+    --mat-button-filled-container-color: #d32f2f !important;
+    --mat-sys-primary: #d32f2f !important;
+  }
+}
+
+:host-context(.dark-theme) .user-card,
+:host-context(.layout--dark) .user-card,
+.layout--dark .user-card {
+  &__avatar {
+    background: #2e4a32;
+    color: #a5d6a7;
+  }
+
+  &__info-item {
+    color: #e0e0e0;
+
+    &--muted {
+      color: #9e9e9e;
+    }
+  }
+
+  &__info-icon {
+    color: #a5d6a7;
+  }
+
+  &__status-icon--active {
+    color: #66bb6a;
+  }
+}
