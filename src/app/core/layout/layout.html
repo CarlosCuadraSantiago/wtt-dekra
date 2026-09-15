@@ -1,0 +1,91 @@
+<div class="layout" [class.layout--dark]="isDarkMode()">
+  <header class="layout__navbar" role="banner">
+    <div class="layout__navbar-left">
+      @if (!isDesktop()) {
+        <button
+          mat-icon-button
+          class="layout__menu-button"
+          aria-label="Toggle navigation menu"
+          (click)="toggleSidebar()"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+    </div>
+
+    <div class="layout__navbar-center">
+      <img class="layout__logo" ngSrc="dekra.svg" alt="Dekra" width="145" height="40" priority />
+    </div>
+
+    <div class="layout__navbar-right">
+      <button
+        mat-icon-button
+        class="layout__theme-toggle"
+        [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+        [attr.aria-pressed]="isDarkMode()"
+        (click)="toggleTheme()"
+      >
+        <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout__body">
+    <mat-sidenav-container class="layout__container">
+      <mat-sidenav
+        class="layout__sidebar"
+        [mode]="isDesktop() ? 'side' : 'over'"
+        [opened]="sidebarOpened()"
+        (closedStart)="sidebarOpened.set(false)"
+      >
+        <nav class="layout__nav" aria-label="Main navigation">
+          <a
+            class="layout__nav-item"
+            routerLink="/users"
+            routerLinkActive="layout__nav-item--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="!isDesktop() && toggleSidebar()"
+          >
+            <mat-icon class="layout__nav-icon">list</mat-icon>
+            <span>List users</span>
+          </a>
+          <a
+            class="layout__nav-item"
+            routerLink="/users/new"
+            routerLinkActive="layout__nav-item--active"
+            (click)="!isDesktop() && toggleSidebar()"
+          >
+            <mat-icon class="layout__nav-icon">person_add</mat-icon>
+            <span>Create user</span>
+          </a>
+          <a
+            class="layout__nav-item"
+            routerLink="/users/update"
+            routerLinkActive="layout__nav-item--active"
+            (click)="!isDesktop() && toggleSidebar()"
+            aria-label="Update users grid"
+          >
+            <mat-icon class="layout__nav-icon">edit</mat-icon>
+            <span>Update user</span>
+          </a>
+          <a
+            class="layout__nav-item"
+            routerLink="/users/delete"
+            routerLinkActive="layout__nav-item--active"
+            (click)="!isDesktop() && toggleSidebar()"
+            aria-label="Delete users grid"
+          >
+            <mat-icon class="layout__nav-icon">delete</mat-icon>
+            <span>Delete user</span>
+          </a>
+        </nav>
+      </mat-sidenav>
+
+      <mat-sidenav-content class="layout__main">
+        <main class="layout__content">
+          <router-outlet />
+        </main>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+</div>

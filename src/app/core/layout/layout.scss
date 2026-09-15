@@ -1,0 +1,147 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: #fff;
+
+  &__navbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 64px;
+    flex: 0 0 64px;
+    padding: 0 1rem;
+    background: #f2f8f6;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  &__navbar-left,
+  &__navbar-right {
+    display: flex;
+    align-items: center;
+  }
+
+  &__navbar-left {
+    justify-content: flex-start;
+  }
+
+  &__navbar-right {
+    justify-content: flex-end;
+  }
+
+  &__navbar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__logo {
+    display: block;
+    height: 40px;
+    width: 145px;
+    object-fit: contain;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__container {
+    flex: 1;
+    height: 100%;
+    background: #fff;
+  }
+
+  &__sidebar {
+    width: 225px;
+    max-width: 225px;
+    background: #008143 !important;
+    color: #fff;
+    border-right: none !important;
+    border-radius: 0 !important;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 0.5rem;
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    &--active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    &--placeholder {
+      opacity: 0.9;
+    }
+  }
+
+  &__nav-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  &__main {
+    background: #fafafa;
+  }
+
+  &__content {
+    box-sizing: border-box;
+    min-height: 100%;
+    padding: 1.5rem;
+
+    @media (max-width: 700px) {
+      padding: 1rem !important;
+    }
+
+    @media (max-width: 960px) {
+      display: flex !important;
+      flex-direction: column;
+      align-items: stretch !important;
+    }
+  }
+
+  &--dark {
+    background: #121212;
+
+    .layout__navbar {
+      background: #1e1e1e;
+      border-bottom-color: #333;
+      color: #e0e0e0;
+    }
+
+    .layout__container {
+      background: #121212;
+    }
+
+    .layout__main {
+      background: #121212;
+    }
+
+    .layout__content {
+      color: #e0e0e0;
+    }
+  }
+}
