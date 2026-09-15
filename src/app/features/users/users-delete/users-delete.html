@@ -1,0 +1,44 @@
+<section class="users-grid" aria-labelledby="delete-title">
+  <header class="users-grid__header">
+    <h1 id="delete-title" class="users-grid__title">Delete users</h1>
+    <p class="users-grid__subtitle">Select a user to delete — {{ totalCount() }} users</p>
+  </header>
+
+  <mat-form-field class="users-grid__search" appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Search users</mat-label>
+    <input matInput [formControl]="searchControl" placeholder="Username, name or email" aria-label="Search users to delete" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  @if (loading()) {
+    <div class="users-grid__loading" role="status" aria-label="Loading users">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    @if (visibleUsers().length === 0) {
+      <p class="users-grid__empty" role="status">No users found for "{{ searchControl.value }}"</p>
+    } @else {
+      <div class="users-grid__grid" role="list">
+        @for (user of visibleUsers(); track user.id) {
+          <app-user-card
+            [user]="user"
+            mode="delete"
+            [deleting]="deletingId() === user.id"
+            (deleteRequested)="confirmDelete($event)"
+            role="listitem"
+          />
+        }
+      </div>
+
+      <div #sentinel class="users-grid__sentinel" aria-hidden="true"></div>
+
+      @if (hasMore()) {
+        <div class="users-grid__loading-more" aria-hidden="true">
+          <mat-spinner diameter="28"></mat-spinner>
+        </div>
+      } @else {
+        <p class="users-grid__end" role="status">All users loaded ({{ totalCount() }})</p>
+      }
+    }
+  }
+</section>

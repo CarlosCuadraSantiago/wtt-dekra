@@ -1,0 +1,36 @@
+@if (loading) {
+  <div class="users-edit__loading" role="status" aria-label="Loading user">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+} @else if (notFound) {
+  <section class="users-edit__not-found">
+    <h1 class="users-edit__title">User not found</h1>
+    <p>The requested user does not exist.</p>
+    <a matButton="filled" routerLink="/users">Back to list</a>
+  </section>
+} @else {
+  <section class="users-edit" aria-labelledby="edit-title">
+    <header class="users-edit__header">
+      <a mat-icon-button routerLink="/users" aria-label="Back to users list">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+      <h1 id="edit-title" class="users-edit__title">Update user — {{ user?.username }}</h1>
+    </header>
+
+    <div class="users-edit__layout">
+      <mat-card class="users-edit__card" appearance="outlined">
+        <mat-card-content>
+          <app-user-form [initialUser]="user" submitLabel="Update user" (submitted)="onSubmit($event)" (valueChange)="onValueChange($event)" />
+        </mat-card-content>
+      </mat-card>
+
+      @if (previewUser(); as preview) {
+        <aside class="users-edit__preview" aria-label="Live preview" aria-live="polite">
+          <h2 class="users-edit__preview-title">Preview</h2>
+          <app-user-card [user]="preview" mode="preview" />
+          <p class="users-edit__preview-hint">Live preview updates as you type</p>
+        </aside>
+      }
+    </div>
+  </section>
+}
