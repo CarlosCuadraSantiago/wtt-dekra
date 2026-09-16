@@ -43,7 +43,7 @@ export class UsersService {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.store));
     } catch {
-      // storage full or unavailable — keep in-memory only
+      // almacenamiento lleno o no disponible — mantener solo en memoria
     }
   }
 

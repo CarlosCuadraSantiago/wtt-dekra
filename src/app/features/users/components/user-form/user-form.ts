@@ -8,11 +8,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { UsersService } from '../../services/users.service';
 import type { User, UserInput } from '../../models/user.model';
 import { userFormSchema } from '../../schemas/user-form.schema';
+import { generateUsername } from '../../utils/username.util';
 
 @Component({
-  imports: [FormField, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule],
+  imports: [FormField, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule, TranslocoDirective],
   selector: 'app-user-form',
   styleUrl: './user-form.scss',
   templateUrl: './user-form.html',
@@ -36,12 +39,17 @@ export class UserForm implements OnInit {
   private readonly model = signal<UserInput>({ ...this.emptyModel });
   private readonly injector = inject(Injector);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly transloco = inject(TranslocoService);
+  private readonly usersService = inject(UsersService);
+  private readonly existingUsernames = signal<string[]>([]);
+  private initialUsername: string | null = null;
 
   userForm!: FieldTree<UserInput>;
 
   ngOnInit(): void {
     const user = this.initialUser();
     if (user) {
+      this.initialUsername = user.username;
       this.model.set({
         username: user.username,
         name: user.name,
@@ -55,11 +63,28 @@ export class UserForm implements OnInit {
     const requirePassword = user === null;
     this.userForm = form(this.model, userFormSchema(requirePassword), { injector: this.injector });
 
-    // Live preview: emit on every model change
+    this.usersService.list().then((users) => {
+      this.existingUsernames.set(users.map((u) => u.username.toLowerCase()));
+    });
+
+    // Autogenera el nombre de usuario a partir del nombre y apellidos (minúsculas, primer apellido, respaldo al segundo si hay colisión)
+    effect(
+      () => {
+        const { name, surnames, username } = this.model();
+        const existing = this.existingUsernames();
+        const generated = generateUsername(name, surnames, existing, this.initialUsername);
+        if (generated !== username) {
+          this.model.update((m) => ({ ...m, username: generated }));
+        }
+      },
+      { injector: this.injector },
+    );
+
+    // Vista previa en vivo: emite en cada cambio del modelo
     effect(
       () => {
         const value = this.model();
-        // emit a shallow copy to avoid mutation surprises
+        // emite una copia superficial para evitar sorpresas por mutación
         this.valueChange.emit({ ...value });
       },
       { injector: this.injector },
@@ -70,7 +95,7 @@ export class UserForm implements OnInit {
     const tree = this.userForm;
     tree().markAsTouched();
     if (!tree().valid()) {
-      this.snackBar.open('Please correct the highlighted errors before saving', 'Close', {
+      this.snackBar.open(this.transloco.translate('userForm.formError'), this.transloco.translate('common.close'), {
         duration: 4000,
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
@@ -79,7 +104,7 @@ export class UserForm implements OnInit {
       return;
     }
     const value = tree().value();
-    // On edit, omit empty password so service keeps existing one
+    // En edición, omite la contraseña vacía para que el servicio conserve la existente
     if (this.initialUser() && !value.password) {
       const { password: _omit, ...rest } = value;
       this.submitted.emit(rest as UserInput);

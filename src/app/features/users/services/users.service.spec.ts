@@ -61,7 +61,7 @@ describe('UsersService', () => {
     const raw = localStorage.getItem('wtt-dekra:users');
     expect(raw).toContain('test.user');
 
-    // new instance should hydrate from storage
+    // la nueva instancia debe hidratarse desde el almacenamiento
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({});
     const second = TestBed.inject(UsersService);

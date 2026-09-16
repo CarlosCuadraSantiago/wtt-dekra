@@ -1,17 +1,9 @@
 @let f = userForm;
 
-<form class="user-form" (submit)="onSubmit(); $event.preventDefault()" novalidate>
+<form class="user-form" (submit)="onSubmit(); $event.preventDefault()" novalidate *transloco="let t">
   <div class="user-form__grid">
     <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Username</mat-label>
-      <input matInput [formField]="f.username" autocomplete="username" />
-      @for (error of f.username().errors(); track error.message) {
-        <mat-error>{{ error.message }}</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Name</mat-label>
+      <mat-label>{{ t('userForm.name') }}</mat-label>
       <input matInput [formField]="f.name" autocomplete="given-name" />
       @for (error of f.name().errors(); track error.message) {
         <mat-error>{{ error.message }}</mat-error>
@@ -19,15 +11,24 @@
     </mat-form-field>
 
     <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Surnames</mat-label>
+      <mat-label>{{ t('userForm.surnames') }}</mat-label>
       <input matInput [formField]="f.surnames" autocomplete="family-name" />
       @for (error of f.surnames().errors(); track error.message) {
         <mat-error>{{ error.message }}</mat-error>
       }
     </mat-form-field>
 
+    <mat-form-field class="user-form__field user-form__field--username" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>{{ t('userForm.username') }}</mat-label>
+      <input matInput [formField]="f.username" autocomplete="username" aria-readonly="true" [attr.aria-describedby]="'username-hint'" tabindex="-1" />
+      @for (error of f.username().errors(); track error.message) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+      <mat-hint id="username-hint">{{ t('userForm.usernameHint') }}</mat-hint>
+    </mat-form-field>
+
     <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Email</mat-label>
+      <mat-label>{{ t('userForm.email') }}</mat-label>
       <input matInput type="email" [formField]="f.email" autocomplete="email" />
       @for (error of f.email().errors(); track error.message) {
         <mat-error>{{ error.message }}</mat-error>
@@ -35,18 +36,18 @@
     </mat-form-field>
 
     <mat-form-field class="user-form__field" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Password @if (!initialUser()) { * }</mat-label>
+      <mat-label>{{ t('userForm.password') }} @if (!initialUser()) { * }</mat-label>
       <input matInput type="password" [formField]="f.password" autocomplete="new-password" />
       @for (error of f.password().errors(); track error.message) {
         <mat-error>{{ error.message }}</mat-error>
       }
       @if (initialUser()) {
-        <mat-hint>Leave blank to keep current password</mat-hint>
+        <mat-hint>{{ t('userForm.leaveBlank') }}</mat-hint>
       }
     </mat-form-field>
 
     <mat-form-field class="user-form__field user-form__field--small" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Age</mat-label>
+      <mat-label>{{ t('userForm.age') }}</mat-label>
       <input matInput type="number" [formField]="f.age" />
       @for (error of f.age().errors(); track error.message) {
         <mat-error>{{ error.message }}</mat-error>
@@ -54,7 +55,7 @@
     </mat-form-field>
 
     <div class="user-form__field user-form__field--checkbox">
-      <mat-checkbox [formField]="f.active">Active</mat-checkbox>
+      <mat-checkbox [formField]="f.active">{{ t('userForm.active') }}</mat-checkbox>
     </div>
   </div>
 
@@ -67,7 +68,7 @@
   }
 
   <div class="user-form__actions">
-    <button matButton type="button" (click)="onClear()">{{ initialUser() ? 'Reset' : 'Clear' }}</button>
+    <button matButton type="button" (click)="onClear()">{{ initialUser() ? t('userForm.reset') : t('userForm.clear') }}</button>
     <button matButton="filled" type="submit" class="user-form__submit" [disabled]="!f().touched() && !f().dirty()">
       {{ submitLabel() }}
     </button>
