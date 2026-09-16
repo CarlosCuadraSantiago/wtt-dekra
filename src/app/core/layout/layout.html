@@ -1,11 +1,11 @@
-<div class="layout" [class.layout--dark]="isDarkMode()">
+<div class="layout" [class.layout--dark]="isDarkMode()" *transloco="let t">
   <header class="layout__navbar" role="banner">
     <div class="layout__navbar-left">
       @if (!isDesktop()) {
         <button
           mat-icon-button
           class="layout__menu-button"
-          aria-label="Toggle navigation menu"
+          [attr.aria-label]="t('layout.navbar.toggleMenu')"
           (click)="toggleSidebar()"
         >
           <mat-icon>menu</mat-icon>
@@ -18,15 +18,42 @@
     </div>
 
     <div class="layout__navbar-right">
-      <button
-        mat-icon-button
-        class="layout__theme-toggle"
-        [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
-        [attr.aria-pressed]="isDarkMode()"
-        (click)="toggleTheme()"
-      >
-        <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-      </button>
+      <div class="layout__controls">
+        <button
+          class="layout__lang-trigger"
+          [matMenuTriggerFor]="langMenu"
+          [attr.aria-label]="t('layout.navbar.changeLanguage')"
+          aria-haspopup="menu"
+          type="button"
+        >
+          <img class="layout__flag" [ngSrc]="langFlagSrc()" [alt]="langFlagAlt()" width="30" height="20" />
+          <span class="layout__lang-label">{{ langLabel() }}</span>
+        </button>
+        <mat-menu #langMenu="matMenu" panelClass="layout__lang-menu" xPosition="before">
+          <button mat-menu-item (click)="setLang('en')" [class.layout__lang-active]="activeLang() === 'en'">
+            <span class="layout__option">
+              <img class="layout__flag layout__flag--menu" ngSrc="flags/gb.svg" alt="United Kingdom" width="30" height="20" />
+              <span>English</span>
+            </span>
+          </button>
+          <button mat-menu-item (click)="setLang('es')" [class.layout__lang-active]="activeLang() === 'es'">
+            <span class="layout__option">
+              <img class="layout__flag layout__flag--menu" ngSrc="flags/es.svg" alt="España" width="30" height="20" />
+              <span>Español</span>
+            </span>
+          </button>
+        </mat-menu>
+
+        <button
+          mat-icon-button
+          class="layout__theme-toggle"
+          [attr.aria-label]="isDarkMode() ? t('layout.navbar.switchToDark') : t('layout.navbar.switchToLight')"
+          [attr.aria-pressed]="isDarkMode()"
+          (click)="toggleTheme()"
+        >
+          <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -43,40 +70,11 @@
             class="layout__nav-item"
             routerLink="/users"
             routerLinkActive="layout__nav-item--active"
-            [routerLinkActiveOptions]="{ exact: true }"
             (click)="!isDesktop() && toggleSidebar()"
+            [attr.aria-label]="t('layout.nav.usersManagement')"
           >
-            <mat-icon class="layout__nav-icon">list</mat-icon>
-            <span>List users</span>
-          </a>
-          <a
-            class="layout__nav-item"
-            routerLink="/users/new"
-            routerLinkActive="layout__nav-item--active"
-            (click)="!isDesktop() && toggleSidebar()"
-          >
-            <mat-icon class="layout__nav-icon">person_add</mat-icon>
-            <span>Create user</span>
-          </a>
-          <a
-            class="layout__nav-item"
-            routerLink="/users/update"
-            routerLinkActive="layout__nav-item--active"
-            (click)="!isDesktop() && toggleSidebar()"
-            aria-label="Update users grid"
-          >
-            <mat-icon class="layout__nav-icon">edit</mat-icon>
-            <span>Update user</span>
-          </a>
-          <a
-            class="layout__nav-item"
-            routerLink="/users/delete"
-            routerLinkActive="layout__nav-item--active"
-            (click)="!isDesktop() && toggleSidebar()"
-            aria-label="Delete users grid"
-          >
-            <mat-icon class="layout__nav-icon">delete</mat-icon>
-            <span>Delete user</span>
+            <mat-icon class="layout__nav-icon">group</mat-icon>
+            <span>{{ t('layout.nav.usersManagement') }}</span>
           </a>
         </nav>
       </mat-sidenav>

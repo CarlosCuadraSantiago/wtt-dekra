@@ -1,15 +1,25 @@
+import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideTransloco } from '@jsverse/transloco';
+import { TranslocoHttpLoader } from '../../transloco-loader';
 import { Layout } from './layout';
 
 describe('Layout', () => {
   beforeEach(async () => {
     localStorage.clear();
-    // ensure DOM class is clean between tests
+    // asegura que la clase del DOM quede limpia entre tests
     document.documentElement.classList.remove('dark-theme');
     await TestBed.configureTestingModule({
       imports: [Layout],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideTransloco({
+          config: { availableLangs: ['en', 'es'], defaultLang: 'en', reRenderOnLangChange: true },
+          loader: TranslocoHttpLoader,
+        }),
+      ],
     }).compileComponents();
   });
 

@@ -1,8 +1,8 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// Incluye tematización para Angular Material con `mat.theme()`.
+// Este mixin de Sass definirá variables CSS que se usan para dar estilo a los componentes
+// de Angular Material según la especificación de diseño Material 3.
+// Aprende más sobre tematización y cómo usarla para los componentes
+// personalizados de tu aplicación en https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
@@ -18,7 +18,7 @@ html {
     )
   );
 
-  // Base color override (#008143) — aplica a botones y sistema primario
+  // Sobrescritura de color base (#008143) — aplica a botones y sistema primario
   --mat-sys-primary: #008143;
   --mat-sys-on-primary: #ffffff;
   --mat-sys-primary-container: #a8f5c2;
@@ -38,7 +38,7 @@ body {
   height: 100%;
 }
 
-// base color — botones y texto primario
+// color base — botones y texto primario
 a {
   color: #008143;
 }
@@ -85,7 +85,7 @@ a {
   background-color: #008143 !important;
 }
 
-// dark mode
+// modo oscuro
 html.dark-theme {
   color-scheme: dark;
 
@@ -127,7 +127,7 @@ html.dark-theme {
     transition: background 0.2s ease;
   }
 
-  // Hover light en dark — outline y fondo más claro que #1e1e1e
+  // Hover claro en modo oscuro — borde y fondo más claros que #1e1e1e
   .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper,
   .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__leading,
   .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__notch,
@@ -145,7 +145,7 @@ html.dark-theme {
     border-color: #008143 !important;
   }
 
-  // Inputs — texto claro en dark (matInput + nativos)
+  // Inputs — texto claro en modo oscuro (matInput + nativos)
   .mat-mdc-input-element,
   input.mat-mdc-input-element,
   textarea.mat-mdc-input-element {
@@ -159,7 +159,7 @@ html.dark-theme {
     color: #888 !important;
   }
 
-  // Override para variables MDC que pintan el texto del input en negro
+  // Sobrescribe variables MDC que pintan el texto del input en negro
   .mat-mdc-form-field-input-control.mat-mdc-form-field-input-control {
     color: #e0e0e0 !important;
   }
@@ -168,7 +168,7 @@ html.dark-theme {
     color: #e0e0e0;
   }
 
-  // Fix para autofill oscuro
+  // Corrección para autocompletado oscuro
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
@@ -177,7 +177,7 @@ html.dark-theme {
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  // Botón create/update deshabilitado — mantener estilo grisáceo visible en dark
+  // Botón crear/actualizar deshabilitado — mantener estilo grisáceo visible en modo oscuro
   .mat-mdc-unelevated-button:disabled,
   .mat-mdc-raised-button:disabled,
   .mat-mdc-filled-button:disabled,
@@ -190,7 +190,7 @@ html.dark-theme {
     opacity: 1 !important;
   }
 
-  // Forzar fondo/texto visibles para filled deshabilitado en dark
+  // Forzar fondo/texto visibles para botón relleno deshabilitado en modo oscuro
   .mat-mdc-filled-button:disabled,
   .mat-mdc-unelevated-button:disabled,
   .user-form__submit:disabled {
@@ -206,7 +206,7 @@ html.dark-theme {
     opacity: 1 !important;
   }
 
-  // Iconos globales en dark — blanco para máximo énfasis/contraste (fix menú/back/theme)
+  // Iconos globales en modo oscuro — blanco para máximo énfasis/contraste (corrección menú/volver/tema)
   .mat-mdc-icon-button:not(:disabled) {
     --mdc-icon-button-icon-color: #ffffff;
     --mat-icon-button-icon-color: #ffffff;
@@ -227,7 +227,7 @@ html.dark-theme {
     outline-offset: 2px;
   }
 
-  // Paginador — flechas visibles en dark (habilitadas claras, deshabilitadas gris medio)
+  // Paginador — flechas visibles en modo oscuro (habilitadas claras, deshabilitadas gris medio)
   .mat-mdc-paginator .mat-mdc-icon-button:not(:disabled) {
     --mdc-icon-button-icon-color: #e0e0e0;
     color: #e0e0e0 !important;
@@ -253,4 +253,44 @@ html.dark-theme {
   .mat-mdc-paginator .mat-mdc-paginator-page-size-label {
     color: #e0e0e0 !important;
   }
+}
+
+// Menú de idioma — global (overlay fuera del componente) — opción A con separación de 8px
+.mat-mdc-menu-panel.layout__lang-menu {
+  min-width: max-content !important;
+  width: auto !important;
+}
+
+.layout__lang-menu .mat-mdc-menu-content {
+  padding: 4px !important;
+}
+
+.layout__lang-menu .mat-mdc-menu-item {
+  gap: 0.75rem;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+
+  .mdc-list-item__primary-text,
+  .mat-mdc-menu-item-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+  }
+
+  .layout__flag--menu {
+    flex-shrink: 0;
+  }
+}
+
+.layout__lang-menu .mat-mdc-menu-item.layout__lang-active,
+.layout__lang-menu .mat-mdc-menu-item.mdc-list-item--selected {
+  background: #e8f5e9 !important;
+  border-radius: 6px;
+  color: #1b5e20;
+}
+
+.layout__lang-menu .mat-mdc-menu-item.layout__lang-active:hover {
+  background: #c8e6c9 !important;
 }
