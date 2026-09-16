@@ -1,0 +1,113 @@
+{
+  "layout": {
+    "nav": {
+      "usersManagement": "Users Management"
+    },
+    "navbar": {
+      "toggleMenu": "Toggle navigation menu",
+      "switchToLight": "Switch to light mode",
+      "switchToDark": "Switch to dark mode",
+      "changeLanguage": "Change language",
+      "english": "English",
+      "spanish": "Spanish"
+    }
+  },
+  "usersManagement": {
+    "title": "Users Management",
+    "subtitle": "{{count}} users",
+    "searchLabel": "Search users",
+    "searchPlaceholder": "Username, name or email",
+    "searchAria": "Search users",
+    "createUser": "Create user",
+    "createAria": "Create user",
+    "viewMode": "View mode",
+    "tableView": "Table view",
+    "cardsView": "Cards view",
+    "table": "Table",
+    "cards": "Cards",
+    "loading": "Loading users",
+    "tableHeaders": {
+      "username": "Username",
+      "name": "Name",
+      "surnames": "Surnames",
+      "email": "Email",
+      "age": "Age",
+      "active": "Active",
+      "actions": "Actions"
+    },
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Edit {{username}}",
+    "delete": "Delete {{username}}",
+    "noUsers": "No users found for \"{{term}}\"",
+    "allLoaded": "All users loaded ({{count}})",
+    "back": "Back to users list",
+    "createTitle": "Create user",
+    "updateTitle": "Update user — {{username}}",
+    "preview": "Preview",
+    "previewHint": "Live preview updates as you type",
+    "snack": {
+      "created": "User created successfully",
+      "updated": "User updated successfully",
+      "deleted": "User {{username}} deleted",
+      "createFail": "Failed to create user",
+      "updateFail": "Failed to update user",
+      "deleteFail": "Failed to delete user"
+    }
+  },
+  "userCard": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "years": "{{age}} years",
+    "lastLogin": "Last login {{date}}",
+    "neverLogged": "Never logged in",
+    "userDetails": "User details",
+    "update": "Update",
+    "delete": "Delete",
+    "deleting": "Deleting…"
+  },
+  "userForm": {
+    "username": "Username",
+    "name": "Name",
+    "surnames": "Surnames",
+    "email": "Email",
+    "password": "Password",
+    "age": "Age",
+    "active": "Active",
+    "usernameHint": "Auto-generated from name and surnames",
+    "leaveBlank": "Leave blank to keep current password",
+    "reset": "Reset",
+    "clear": "Clear",
+    "create": "Create user",
+    "update": "Update user",
+    "formError": "Please correct the highlighted errors before saving",
+    "required": "is required"
+  },
+  "common": {
+    "close": "Close"
+  },
+  "confirmDelete": {
+    "title": "Delete user",
+    "desc": "Are you sure you want to delete <strong>{{username}}</strong>?",
+    "hint": "This action cannot be undone. Email: {{email}}",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirmAria": "Confirm delete {{username}}"
+  },
+  "validation": {
+    "usernameRequired": "Username is required",
+    "usernamePattern": "Use letters, numbers, dot, dash or underscore (start with letter)",
+    "usernameMax": "Username must be at most 20 characters",
+    "nameRequired": "Name is required",
+    "nameMax": "Name must be at most 50 characters",
+    "surnamesRequired": "Surnames are required",
+    "surnamesMax": "Surnames must be at most 100 characters",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Password must be at least 8 characters",
+    "ageRequired": "Age is required",
+    "ageMin": "Age must be at least 18",
+    "ageMax": "Age must be at most 120"
+  }
+}

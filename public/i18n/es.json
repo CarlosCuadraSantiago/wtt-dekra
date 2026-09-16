@@ -1,0 +1,113 @@
+{
+  "layout": {
+    "nav": {
+      "usersManagement": "Gestión de usuarios"
+    },
+    "navbar": {
+      "toggleMenu": "Abrir menú de navegación",
+      "switchToLight": "Cambiar a modo claro",
+      "switchToDark": "Cambiar a modo oscuro",
+      "changeLanguage": "Cambiar idioma",
+      "english": "Inglés",
+      "spanish": "Español"
+    }
+  },
+  "usersManagement": {
+    "title": "Gestión de usuarios",
+    "subtitle": "{{count}} usuarios",
+    "searchLabel": "Buscar usuarios",
+    "searchPlaceholder": "Usuario, nombre o email",
+    "searchAria": "Buscar usuarios",
+    "createUser": "Crear usuario",
+    "createAria": "Crear usuario",
+    "viewMode": "Modo de vista",
+    "tableView": "Vista tabla",
+    "cardsView": "Vista tarjetas",
+    "table": "Tabla",
+    "cards": "Tarjetas",
+    "loading": "Cargando usuarios",
+    "tableHeaders": {
+      "username": "Usuario",
+      "name": "Nombre",
+      "surnames": "Apellidos",
+      "email": "Correo",
+      "age": "Edad",
+      "active": "Activo",
+      "actions": "Acciones"
+    },
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "edit": "Editar {{username}}",
+    "delete": "Eliminar {{username}}",
+    "noUsers": "No se encontraron usuarios para \"{{term}}\"",
+    "allLoaded": "Todos los usuarios cargados ({{count}})",
+    "back": "Volver al listado",
+    "createTitle": "Crear usuario",
+    "updateTitle": "Actualizar usuario — {{username}}",
+    "preview": "Vista previa",
+    "previewHint": "La vista previa se actualiza al escribir",
+    "snack": {
+      "created": "Usuario creado correctamente",
+      "updated": "Usuario actualizado correctamente",
+      "deleted": "Usuario {{username}} eliminado",
+      "createFail": "Error al crear usuario",
+      "updateFail": "Error al actualizar usuario",
+      "deleteFail": "Error al eliminar usuario"
+    }
+  },
+  "userCard": {
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "years": "{{age}} años",
+    "lastLogin": "Último acceso {{date}}",
+    "neverLogged": "Nunca ha iniciado sesión",
+    "userDetails": "Detalles del usuario",
+    "update": "Actualizar",
+    "delete": "Eliminar",
+    "deleting": "Eliminando…"
+  },
+  "userForm": {
+    "username": "Usuario",
+    "name": "Nombre",
+    "surnames": "Apellidos",
+    "email": "Correo",
+    "password": "Contraseña",
+    "age": "Edad",
+    "active": "Activo",
+    "usernameHint": "Autogenerado a partir del nombre y apellidos",
+    "leaveBlank": "Dejar en blanco para mantener la contraseña actual",
+    "reset": "Restablecer",
+    "clear": "Limpiar",
+    "create": "Crear usuario",
+    "update": "Actualizar usuario",
+    "formError": "Corrige los errores marcados antes de guardar",
+    "required": "es obligatorio"
+  },
+  "common": {
+    "close": "Cerrar"
+  },
+  "confirmDelete": {
+    "title": "Eliminar usuario",
+    "desc": "¿Seguro que quieres eliminar a <strong>{{username}}</strong>?",
+    "hint": "Esta acción no se puede deshacer. Email: {{email}}",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "confirmAria": "Confirmar eliminación de {{username}}"
+  },
+  "validation": {
+    "usernameRequired": "El usuario es obligatorio",
+    "usernamePattern": "Usa letras, números, punto, guion o guion bajo (empieza con letra)",
+    "usernameMax": "El usuario debe tener como máximo 20 caracteres",
+    "nameRequired": "El nombre es obligatorio",
+    "nameMax": "El nombre debe tener como máximo 50 caracteres",
+    "surnamesRequired": "Los apellidos son obligatorios",
+    "surnamesMax": "Los apellidos deben tener como máximo 100 caracteres",
+    "emailRequired": "El correo es obligatorio",
+    "emailInvalid": "Introduce un correo válido",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+    "ageRequired": "La edad es obligatoria",
+    "ageMin": "La edad debe ser al menos 18",
+    "ageMax": "La edad debe ser como máximo 120"
+  }
+}
