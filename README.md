@@ -41,7 +41,11 @@ This will compile your project and store the build artifacts in the `dist/` dire
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
 
 ```bash
-ng test
+npm test              # run once (ng test)
+npm run test:ui       # run with Vitest UI
+npm run test:cov      # run with coverage (coverage/wtt-dekra)
+npm run test:cov:ui   # coverage + UI
+npm run test:cov:watch # coverage in watch mode
 ```
 
 ## Running end-to-end tests
