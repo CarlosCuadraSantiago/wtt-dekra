@@ -86,7 +86,19 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
   private scrollHandler?: () => void;
 
-  @ViewChild(MatPaginator) paginator?: MatPaginator;
+  private _paginator?: MatPaginator;
+  @ViewChild(MatPaginator) set paginator(value: MatPaginator | undefined) {
+    if (value) {
+      this._paginator = value;
+      // asegura paginador table 10 por página sin selector de Items per page
+      value.pageSize = 10;
+      this.dataSource.paginator = value;
+      this.cdr.markForCheck();
+    }
+  }
+  get paginator(): MatPaginator | undefined {
+    return this._paginator;
+  }
   @ViewChild('sentinel') sentinel?: ElementRef<HTMLElement>;
   @ViewChild('formContainer') formContainer?: ElementRef<HTMLElement>;
   @ViewChild('listContainer') listContainer?: ElementRef<HTMLElement>;
@@ -224,8 +236,9 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
+    if (this._paginator) {
+      this.dataSource.paginator = this._paginator;
+      this.cdr.markForCheck();
     }
     this.observeSentinel();
   }
@@ -241,7 +254,13 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
     this.viewMode.set(mode);
     this.visibleCount.set(PAGE_SIZE);
     this.cdr.markForCheck();
-    setTimeout(() => this.observeSentinel(), 0);
+    setTimeout(() => {
+      if (mode === 'table' && this._paginator) {
+        this.dataSource.paginator = this._paginator;
+        this.cdr.markForCheck();
+      }
+      this.observeSentinel();
+    }, 0);
   }
 
   openCreate(): void {
