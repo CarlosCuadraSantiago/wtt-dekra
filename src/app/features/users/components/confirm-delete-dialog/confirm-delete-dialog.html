@@ -1,21 +1,18 @@
-<div class="confirm-delete" role="dialog" aria-labelledby="delete-title" aria-describedby="delete-desc">
+<div class="confirm-delete" role="dialog" aria-labelledby="delete-title" aria-describedby="delete-desc" *transloco="let t">
   <div class="confirm-delete__header">
     <mat-icon class="confirm-delete__icon" aria-hidden="true">warning</mat-icon>
-    <h2 id="delete-title" class="confirm-delete__title" mat-dialog-title>Delete user</h2>
+    <h2 id="delete-title" class="confirm-delete__title" mat-dialog-title>{{ t('confirmDelete.title') }}</h2>
   </div>
 
   <mat-dialog-content class="confirm-delete__content">
-    <p id="delete-desc" class="confirm-delete__desc">
-      Are you sure you want to delete <strong>{{ data.user.username }}</strong
-      >?
-    </p>
-    <p class="confirm-delete__hint">This action cannot be undone. Email: {{ data.user.email }}</p>
+    <p id="delete-desc" class="confirm-delete__desc" [innerHTML]="t('confirmDelete.desc', { username: data.user.username })"></p>
+    <p class="confirm-delete__hint">{{ t('confirmDelete.hint', { email: data.user.email }) }}</p>
   </mat-dialog-content>
 
   <mat-dialog-actions class="confirm-delete__actions" align="end">
-    <button matButton type="button" (click)="close(false)">Cancel</button>
-    <button matButton="filled" type="button" class="confirm-delete__confirm" (click)="close(true)" [attr.aria-label]="'Confirm delete ' + data.user.username">
-      Delete
+    <button matButton type="button" (click)="close(false)">{{ t('confirmDelete.cancel') }}</button>
+    <button matButton="filled" type="button" class="confirm-delete__confirm" (click)="close(true)" [attr.aria-label]="t('confirmDelete.confirmAria', { username: data.user.username })">
+      {{ t('confirmDelete.delete') }}
     </button>
   </mat-dialog-actions>
 </div>

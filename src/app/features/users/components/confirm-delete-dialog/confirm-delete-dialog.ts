@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslocoDirective } from '@jsverse/transloco';
 import type { User } from '../../models/user.model';
 
 @Component({
-  imports: [MatButtonModule, MatDialogModule, MatIconModule],
+  imports: [MatButtonModule, MatDialogModule, MatIconModule, TranslocoDirective],
   selector: 'app-confirm-delete-dialog',
   styleUrl: './confirm-delete-dialog.scss',
   templateUrl: './confirm-delete-dialog.html',

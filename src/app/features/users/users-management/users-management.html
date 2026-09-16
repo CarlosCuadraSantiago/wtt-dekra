@@ -1,0 +1,207 @@
+<section class="users-management" aria-labelledby="users-management-title" *transloco="let t">
+  @if (viewState() === 'list') {
+    <div #listContainer class="users-management__list-view">
+      <header class="users-management__header">
+        <h1 id="users-management-title" class="users-management__title">{{ t('usersManagement.title') }}</h1>
+        <p class="users-management__subtitle">{{ t('usersManagement.subtitle', { count: totalCount() }) }}</p>
+      </header>
+
+      <div class="users-management__toolbar">
+        <div class="users-management__toolbar-left">
+          <mat-form-field class="users-management__search" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>{{ t('usersManagement.searchLabel') }}</mat-label>
+            <input
+              matInput
+              [formControl]="searchControl"
+              [placeholder]="t('usersManagement.searchPlaceholder')"
+              [attr.aria-label]="t('usersManagement.searchAria')"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <button mat-flat-button class="users-management__create" (click)="openCreate()" [attr.aria-label]="t('usersManagement.createAria')">
+            <mat-icon>person_add</mat-icon>
+            <span>{{ t('usersManagement.createUser') }}</span>
+          </button>
+        </div>
+
+        <mat-button-toggle-group
+          class="users-management__view-toggle"
+          [value]="viewMode()"
+          (change)="setViewMode($event.value)"
+          [attr.aria-label]="t('usersManagement.viewMode')"
+          hideSingleSelectionIndicator="true"
+        >
+          <mat-button-toggle value="table" [attr.aria-label]="t('usersManagement.tableView')">
+            <mat-icon>table_rows</mat-icon>
+            <span class="users-management__toggle-label">{{ t('usersManagement.table') }}</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="cards" [attr.aria-label]="t('usersManagement.cardsView')">
+            <mat-icon>grid_view</mat-icon>
+            <span class="users-management__toggle-label">{{ t('usersManagement.cards') }}</span>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      @if (loading()) {
+        <div class="users-management__loading" role="status" [attr.aria-label]="t('usersManagement.loading')">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else {
+        @if (viewMode() === 'table') {
+          <div class="users-management__table-wrapper">
+            <table mat-table [dataSource]="dataSource" class="users-management__table" aria-label="Users table">
+              <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef>{{ t('usersManagement.tableHeaders.username') }}</th>
+                <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>{{ t('usersManagement.tableHeaders.name') }}</th>
+                <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="surnames">
+                <th mat-header-cell *matHeaderCellDef>{{ t('usersManagement.tableHeaders.surnames') }}</th>
+                <td mat-cell *matCellDef="let user">{{ user.surnames }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>{{ t('usersManagement.tableHeaders.email') }}</th>
+                <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef>{{ t('usersManagement.tableHeaders.age') }}</th>
+                <td mat-cell *matCellDef="let user">{{ user.age }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef>{{ t('usersManagement.tableHeaders.active') }}</th>
+                <td mat-cell *matCellDef="let user">
+                  <mat-icon
+                    class="users-management__status-icon"
+                    [class.users-management__status-icon--active]="user.active"
+                    [class.users-management__status-icon--inactive]="!user.active"
+                    [attr.aria-label]="user.active ? t('usersManagement.active') : t('usersManagement.inactive')"
+                  >
+                    {{ user.active ? 'check_circle' : 'cancel' }}
+                  </mat-icon>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef [attr.aria-label]="t('usersManagement.tableHeaders.actions')"></th>
+                <td mat-cell *matCellDef="let user" class="users-management__actions-cell">
+                  <button mat-icon-button (click)="openEdit(user)" [attr.aria-label]="t('usersManagement.edit', { username: user.username })">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    (click)="confirmDelete(user)"
+                    [disabled]="deletingId() === user.id"
+                    [attr.aria-label]="t('usersManagement.delete', { username: user.username })"
+                    [attr.aria-busy]="deletingId() === user.id"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell users-management__empty" [attr.colspan]="displayedColumns.length">
+                  {{ t('usersManagement.noUsers', { term: searchControl.value }) }}
+                </td>
+              </tr>
+            </table>
+
+            <mat-paginator
+              class="users-management__paginator"
+              [pageSize]="10"
+              [pageSizeOptions]="[10]"
+              [hidePageSize]="true"
+              showFirstLastButtons
+              aria-label="Users pagination"
+            ></mat-paginator>
+          </div>
+        } @else {
+          @if (visibleUsers().length === 0) {
+            <p class="users-management__empty-cards" role="status">{{ t('usersManagement.noUsers', { term: searchControl.value }) }}</p>
+          } @else {
+            <div class="users-management__grid" role="list">
+              @for (user of visibleUsers(); track user.id) {
+                <app-user-card
+                  [user]="user"
+                  mode="manage"
+                  [deleting]="deletingId() === user.id"
+                  (editRequested)="openEdit($event)"
+                  (deleteRequested)="confirmDelete($event)"
+                  role="listitem"
+                />
+              }
+            </div>
+
+            <div #sentinel class="users-management__sentinel" aria-hidden="true"></div>
+
+            @if (hasMore()) {
+              <div class="users-management__loading-more" aria-hidden="true">
+                <mat-spinner diameter="28"></mat-spinner>
+              </div>
+            } @else {
+              <p class="users-management__end" role="status">{{ t('usersManagement.allLoaded', { count: totalCount() }) }}</p>
+            }
+          }
+        }
+      }
+    </div>
+  } @else {
+    <div #formContainer class="users-management__form-view">
+      <header class="users-management__form-header">
+        <button
+          mat-icon-button
+          class="users-management__back"
+          (click)="closeForm()"
+          [attr.aria-label]="t('usersManagement.back')"
+          [disabled]="isFormAnimating()"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1 class="users-management__form-title">
+          {{ viewState() === 'create' ? t('usersManagement.createTitle') : t('usersManagement.updateTitle', { username: editingUser()?.username ?? '' }) }}
+        </h1>
+      </header>
+
+      <div class="users-management__form-layout">
+        <mat-card class="users-management__form-card" appearance="outlined">
+          <mat-card-content>
+            @if (viewState() === 'create') {
+              <app-user-form
+                [submitLabel]="t('userForm.create')"
+                (submitted)="onSubmit($event)"
+                (valueChange)="onValueChange($event)"
+              />
+            } @else {
+              <app-user-form
+                [initialUser]="editingUser()"
+                [submitLabel]="t('userForm.update')"
+                (submitted)="onSubmit($event)"
+                (valueChange)="onValueChange($event)"
+              />
+            }
+          </mat-card-content>
+        </mat-card>
+
+        @if (previewUser(); as preview) {
+          <aside class="users-management__preview" aria-label="Live preview" aria-live="polite">
+            <h2 class="users-management__preview-title">{{ t('usersManagement.preview') }}</h2>
+            <app-user-card [user]="preview" mode="preview" />
+            <p class="users-management__preview-hint">{{ t('usersManagement.previewHint') }}</p>
+          </aside>
+        }
+      </div>
+    </div>
+  }
+</section>

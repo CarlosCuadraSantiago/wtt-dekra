@@ -1,4 +1,4 @@
-<article class="user-card" role="article" [attr.aria-label]="user().username">
+<article class="user-card" role="article" [attr.aria-label]="user().username" *transloco="let t">
   <mat-card appearance="outlined" class="user-card__card">
     <mat-card-header class="user-card__header">
       <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
@@ -10,15 +10,15 @@
           class="user-card__status-icon"
           [class.user-card__status-icon--active]="user().active"
           [class.user-card__status-icon--inactive]="!user().active"
-          [attr.aria-label]="user().active ? 'Active' : 'Inactive'"
+          [attr.aria-label]="user().active ? t('userCard.active') : t('userCard.inactive')"
           >{{ user().active ? 'check_circle' : 'cancel' }}</mat-icon
         >
-        <span>{{ user().active ? 'Active' : 'Inactive' }}</span>
+        <span>{{ user().active ? t('userCard.active') : t('userCard.inactive') }}</span>
       </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content class="user-card__content">
-      <ul class="user-card__info" aria-label="User details">
+      <ul class="user-card__info" [attr.aria-label]="t('userCard.userDetails')">
         <li class="user-card__info-item">
           <mat-icon class="user-card__info-icon" aria-hidden="true">badge</mat-icon>
           <span class="user-card__info-text">{{ user().name }} {{ user().surnames }}</span>
@@ -29,17 +29,17 @@
         </li>
         <li class="user-card__info-item">
           <mat-icon class="user-card__info-icon" aria-hidden="true">cake</mat-icon>
-          <span class="user-card__info-text">{{ user().age }} years</span>
+          <span class="user-card__info-text">{{ t('userCard.years', { age: user().age }) }}</span>
         </li>
         @if (user().lastLogin) {
           <li class="user-card__info-item">
             <mat-icon class="user-card__info-icon" aria-hidden="true">schedule</mat-icon>
-            <span class="user-card__info-text">Last login {{ user().lastLogin?.toLocaleDateString() }}</span>
+            <span class="user-card__info-text">{{ t('userCard.lastLogin', { date: user().lastLogin?.toLocaleDateString() }) }}</span>
           </li>
         } @else {
           <li class="user-card__info-item user-card__info-item--muted">
             <mat-icon class="user-card__info-icon" aria-hidden="true">schedule</mat-icon>
-            <span class="user-card__info-text">Never logged in</span>
+            <span class="user-card__info-text">{{ t('userCard.neverLogged') }}</span>
           </li>
         }
       </ul>
@@ -52,10 +52,10 @@
             mat-flat-button
             class="user-card__action user-card__action--update"
             [routerLink]="['/users', user().id, 'edit']"
-            [attr.aria-label]="'Update ' + user().username"
+            [attr.aria-label]="t('usersManagement.edit', { username: user().username })"
           >
             <mat-icon>edit</mat-icon>
-            Update
+            {{ t('userCard.update') }}
           </a>
         } @else if (mode() === 'delete') {
           <button
@@ -64,12 +64,37 @@
             class="user-card__action user-card__action--delete"
             (click)="deleteRequested.emit(user())"
             [disabled]="deleting()"
-            [attr.aria-label]="'Delete ' + user().username"
+            [attr.aria-label]="t('usersManagement.delete', { username: user().username })"
             [attr.aria-busy]="deleting()"
           >
             <mat-icon>delete</mat-icon>
-            {{ deleting() ? 'Deleting…' : 'Delete' }}
+            {{ deleting() ? t('userCard.deleting') : t('userCard.delete') }}
           </button>
+        } @else if (mode() === 'manage') {
+          <div class="user-card__actions-row">
+            <button
+              mat-flat-button
+              type="button"
+              class="user-card__action user-card__action--update user-card__action--half"
+              (click)="editRequested.emit(user())"
+              [attr.aria-label]="t('usersManagement.edit', { username: user().username })"
+            >
+              <mat-icon>edit</mat-icon>
+              {{ t('userCard.update') }}
+            </button>
+            <button
+              mat-flat-button
+              type="button"
+              class="user-card__action user-card__action--delete user-card__action--half"
+              (click)="deleteRequested.emit(user())"
+              [disabled]="deleting()"
+              [attr.aria-label]="t('usersManagement.delete', { username: user().username })"
+              [attr.aria-busy]="deleting()"
+            >
+              <mat-icon>delete</mat-icon>
+              {{ deleting() ? t('userCard.deleting') : t('userCard.delete') }}
+            </button>
+          </div>
         }
       </mat-card-actions>
     }
