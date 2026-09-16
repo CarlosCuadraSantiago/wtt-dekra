@@ -26,19 +26,19 @@
           aria-haspopup="menu"
           type="button"
         >
-          <img class="layout__flag" [ngSrc]="langFlagSrc()" [alt]="langFlagAlt()" width="30" height="20" />
+          <img class="layout__flag" [ngSrc]="langFlagSrc()" [alt]="langFlagAlt()" width="21" height="14" />
           <span class="layout__lang-label">{{ langLabel() }}</span>
         </button>
         <mat-menu #langMenu="matMenu" panelClass="layout__lang-menu" xPosition="before">
           <button mat-menu-item (click)="setLang('en')" [class.layout__lang-active]="activeLang() === 'en'">
             <span class="layout__option">
-              <img class="layout__flag layout__flag--menu" ngSrc="flags/gb.svg" alt="United Kingdom" width="30" height="20" />
+              <img class="layout__flag layout__flag--menu" ngSrc="flags/gb.svg" alt="United Kingdom" width="21" height="14" />
               <span>English</span>
             </span>
           </button>
           <button mat-menu-item (click)="setLang('es')" [class.layout__lang-active]="activeLang() === 'es'">
             <span class="layout__option">
-              <img class="layout__flag layout__flag--menu" ngSrc="flags/es.svg" alt="España" width="30" height="20" />
+              <img class="layout__flag layout__flag--menu" ngSrc="flags/es.svg" alt="España" width="21" height="14" />
               <span>Español</span>
             </span>
           </button>

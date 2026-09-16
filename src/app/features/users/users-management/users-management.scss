@@ -297,6 +297,51 @@
   &__paginator {
     border-top-color: #333;
     background: #1e1e1e;
+
+    :host ::ng-deep .mat-mdc-paginator-range-label,
+    :host ::ng-deep .mat-mdc-paginator-page-size-label {
+      color: #e0e0e0 !important;
+    }
+
+    :host ::ng-deep .mat-mdc-icon-button:not(:disabled) .mat-icon {
+      color: #ffffff !important;
+    }
+
+    :host ::ng-deep .mat-mdc-icon-button:disabled .mat-icon {
+      color: #616161 !important;
+    }
+  }
+
+  // Toggle vista en modo oscuro — el no seleccionado debe verse (gris claro sobre fondo oscuro)
+  &__view-toggle {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+
+    .mat-button-toggle {
+      color: #e0e0e0;
+      --mat-button-toggle-label-text-color: #e0e0e0;
+
+      .mat-icon {
+        color: #e0e0e0;
+      }
+
+      &.mat-button-toggle-checked {
+        background: #e8f5e9 !important;
+        color: #1b5e20 !important;
+
+        .mat-icon {
+          color: #1b5e20 !important;
+        }
+      }
+
+      &:not(.mat-button-toggle-checked) {
+        color: #bdbdbd;
+
+        .mat-icon {
+          color: #bdbdbd;
+        }
+      }
+    }
   }
 
   &__end {

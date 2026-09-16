@@ -74,15 +74,15 @@
 
   &__flag {
     display: block;
-    width: 30px;
-    height: 20px;
+    width: 21px;
+    height: 14px;
     border-radius: 2px;
     object-fit: cover;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
 
     &--menu {
-      width: 30px;
-      height: 20px;
+      width: 21px;
+      height: 14px;
     }
   }
 
@@ -218,6 +218,10 @@
 
     .layout__content {
       color: #e0e0e0;
+    }
+
+    .layout__lang-trigger:hover {
+      background: rgba(255, 255, 255, 0.08);
     }
   }
 }
