@@ -113,6 +113,8 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
   readonly visibleUsers = computed(() => this.filteredUsers().slice(0, this.visibleCount()));
   readonly hasMore = computed(() => this.visibleCount() < this.filteredUsers().length);
   readonly totalCount = computed(() => this.filteredUsers().length);
+  // Indica si el store está vacío (sin datos iniciales) — usado para deshabilitar buscador y switch
+  readonly isEmpty = computed(() => this.allUsers().length === 0);
 
   readonly previewUser = computed<User | null>(() => {
     const state = this.viewState();
@@ -160,6 +162,15 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+    // Deshabilita buscador cuando no hay datos (store vacío) — se ejecuta cada que isEmpty cambia
+    effect(() => {
+      const empty = this.isEmpty();
+      if (empty) {
+        this.searchControl.disable({ emitEvent: false });
+      } else {
+        this.searchControl.enable({ emitEvent: false });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -175,6 +186,12 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource.paginator = this.paginator;
       }
       this.loading.set(false);
+      // Sincroniza estado disabled del buscador tras carga inicial
+      if (users.length === 0) {
+        this.searchControl.disable({ emitEvent: false });
+      } else {
+        this.searchControl.enable({ emitEvent: false });
+      }
       this.cdr.markForCheck();
       setTimeout(() => this.observeSentinel(), 0);
 
@@ -337,6 +354,12 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
       }
+      // Habilita buscador/toggle si ahora hay datos
+      if (users.length === 0) {
+        this.searchControl.disable({ emitEvent: false });
+      } else {
+        this.searchControl.enable({ emitEvent: false });
+      }
       this.animateOut(() => {
         this.viewState.set('list');
         this.editingUser.set(null);
@@ -378,6 +401,10 @@ export class UsersManagement implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.data = this.dataSource.data.filter((u) => u.id !== user.id);
       if (this.visibleCount() > this.filteredUsers().length) {
         this.visibleCount.set(this.filteredUsers().length);
+      }
+      // Si queda vacío, deshabilita buscador/toggle
+      if (this.allUsers().length === 0) {
+        this.searchControl.disable({ emitEvent: false });
       }
       this.cdr.markForCheck();
       this.snackBar.open(this.transloco.translate('usersManagement.snack.deleted', { username: user.username }), this.transloco.translate('common.close'), {

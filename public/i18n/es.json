@@ -40,6 +40,8 @@
     "edit": "Editar {{username}}",
     "delete": "Eliminar {{username}}",
     "noUsers": "No se encontraron usuarios para \"{{term}}\"",
+    "empty": "No hay usuarios aún, crea el primero",
+    "emptyDesc": "Empieza creando tu primer usuario",
     "allLoaded": "Todos los usuarios cargados ({{count}})",
     "back": "Volver al listado",
     "createTitle": "Crear usuario",

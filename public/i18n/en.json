@@ -40,6 +40,8 @@
     "edit": "Edit {{username}}",
     "delete": "Delete {{username}}",
     "noUsers": "No users found for \"{{term}}\"",
+    "empty": "No users yet, create the first one",
+    "emptyDesc": "Get started by creating your first user",
     "allLoaded": "All users loaded ({{count}})",
     "back": "Back to users list",
     "createTitle": "Create user",

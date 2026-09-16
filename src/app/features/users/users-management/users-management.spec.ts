@@ -404,4 +404,56 @@ describe('UsersManagement', () => {
     expect(comp.editingUser()?.id).toBe(missingId);
     expect(comp.viewState()).toBe('edit');
   });
+
+  it('should disable search and view switch when store is empty', async () => {
+    usersServiceMock.list.mockResolvedValueOnce([]);
+    const fixture = TestBed.createComponent(UsersManagement);
+    fixture.detectChanges();
+    await new Promise((r) => setTimeout(r, 0));
+    await fixture.whenStable();
+    const comp = fixture.componentInstance;
+    fixture.detectChanges();
+    expect(comp.isEmpty()).toBe(true);
+    expect(comp.searchControl.disabled).toBe(true);
+    expect(comp.totalCount()).toBe(0);
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.textContent).toContain('usersManagement.empty');
+  });
+
+  it('should enable search after creating first user', async () => {
+    usersServiceMock.list.mockResolvedValueOnce([]);
+    const fixture = TestBed.createComponent(UsersManagement);
+    fixture.detectChanges();
+    await new Promise((r) => setTimeout(r, 0));
+    await fixture.whenStable();
+    const comp = fixture.componentInstance;
+    expect(comp.isEmpty()).toBe(true);
+    expect(comp.searchControl.disabled).toBe(true);
+    // simulate creating first user
+    usersServiceMock.list.mockResolvedValueOnce([makeUser({ id: 1 })]);
+    comp.openCreate();
+    await comp.onSubmit({
+      username: 'new.user',
+      name: 'New',
+      surnames: 'User',
+      email: 'new@example.com',
+      password: 'P@ssw0rd9',
+      age: 30,
+      active: true,
+    });
+    expect(comp.isEmpty()).toBe(false);
+    expect(comp.searchControl.enabled).toBe(true);
+  });
+
+  it('should show empty message not noUsers when store empty', async () => {
+    usersServiceMock.list.mockResolvedValueOnce([]);
+    const fixture = TestBed.createComponent(UsersManagement);
+    fixture.detectChanges();
+    await new Promise((r) => setTimeout(r, 0));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.textContent).toContain('usersManagement.empty');
+    expect(fixture.componentInstance.isEmpty()).toBe(true);
+  });
 });

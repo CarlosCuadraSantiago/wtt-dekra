@@ -115,11 +115,35 @@ html.dark-theme {
 
   .mat-mdc-form-field {
     --mat-form-field-outlined-outline-color: #555;
-    --mat-form-field-label-text-color: #aaa;
+    --mat-form-field-label-text-color: #e0e0e0;
     --mat-form-field-input-text-color: #e0e0e0;
-    --mat-form-field-input-text-placeholder-color: #888;
+    --mat-form-field-input-text-placeholder-color: #b0b0b0;
     --mat-form-field-outlined-hover-outline-color: #8a8a8a;
     --mat-form-field-outlined-focus-outline-color: #008143;
+    --mat-form-field-hover-label-text-color: #ffffff;
+    --mat-form-field-focus-label-text-color: #a8f5c2;
+  }
+
+  // Labels del formulario más visibles en oscuro (énfasis, no gris apagado)
+  .mdc-floating-label,
+  .mat-mdc-form-field-label,
+  label.mat-mdc-floating-label {
+    color: #e0e0e0 !important;
+    opacity: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  .mdc-floating-label--required::after {
+    color: #a8f5c2 !important;
+  }
+
+  .mat-mdc-form-field:hover .mdc-floating-label,
+  .mat-mdc-form-field.mat-focused .mdc-floating-label {
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-form-field.mat-focused .mdc-floating-label {
+    color: #a8f5c2 !important;
   }
 
   .mat-mdc-text-field-wrapper {
@@ -143,6 +167,39 @@ html.dark-theme {
   .mdc-text-field--focused .mdc-notched-outline__notch,
   .mdc-text-field--focused .mdc-notched-outline__trailing {
     border-color: #008143 !important;
+  }
+
+  // Buscador deshabilitado en modo oscuro — idéntico al habilitado (mismo borde), solo texto atenuado
+  .mdc-text-field--disabled {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #555 !important;
+      opacity: 1 !important;
+    }
+
+    .mdc-floating-label,
+    .mdc-floating-label--float-above {
+      color: #bdbdbd !important;
+      opacity: 1 !important;
+    }
+
+    .mat-mdc-input-element,
+    input.mat-mdc-input-element {
+      color: #bdbdbd !important;
+      -webkit-text-fill-color: #bdbdbd !important;
+      opacity: 1 !important;
+    }
+
+    .mat-icon,
+    mat-icon {
+      color: #9e9e9e !important;
+      opacity: 1 !important;
+    }
+  }
+
+  .mat-mdc-form-field.mat-form-field-disabled {
+    opacity: 1 !important;
   }
 
   // Inputs — texto claro en modo oscuro (matInput + nativos)

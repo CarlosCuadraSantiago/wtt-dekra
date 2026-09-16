@@ -31,6 +31,7 @@
           (change)="setViewMode($event.value)"
           [attr.aria-label]="t('usersManagement.viewMode')"
           hideSingleSelectionIndicator="true"
+          [disabled]="isEmpty()"
         >
           <mat-button-toggle value="table" [attr.aria-label]="t('usersManagement.tableView')">
             <mat-icon>table_rows</mat-icon>
@@ -48,7 +49,11 @@
           <mat-spinner diameter="40"></mat-spinner>
         </div>
       } @else {
-        @if (viewMode() === 'table') {
+        @if (isEmpty()) {
+          <div class="users-management__empty-state" role="status" aria-live="polite">
+            <p class="users-management__empty-title">{{ t('usersManagement.empty') }}</p>
+          </div>
+        } @else if (viewMode() === 'table') {
           <div class="users-management__table-wrapper">
             <table mat-table [dataSource]="dataSource" class="users-management__table" aria-label="Users table">
               <ng-container matColumnDef="username">

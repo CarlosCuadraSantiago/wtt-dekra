@@ -26,9 +26,14 @@ describe('UsersService', () => {
     localStorage.clear();
   });
 
-  it('should list seeded users', async () => {
+  it('should start empty when no storage', async () => {
     const users = await service.list();
-    expect(users.length).toBeGreaterThan(0);
+    expect(users.length).toBe(0);
+  });
+
+  it('should start with nextId 1 when empty', async () => {
+    const created = await service.create(BASE_INPUT);
+    expect(created.id).toBe(1);
   });
 
   it('should create and retrieve a user', async () => {
@@ -71,9 +76,17 @@ describe('UsersService', () => {
 
   it('should reset to mock data', async () => {
     await service.create(BASE_INPUT);
-    expect((await service.list()).length).toBeGreaterThan(22);
+    expect((await service.list()).length).toBe(1);
     service.reset();
     expect((await service.list()).length).toBe(22);
     expect(localStorage.getItem('wtt-dekra:users')).toBeNull();
+  });
+
+  it('should hydrate empty when storage is corrupted', async () => {
+    localStorage.setItem('wtt-dekra:users', 'not-json');
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({});
+    const second = TestBed.inject(UsersService);
+    expect((await second.list()).length).toBe(0);
   });
 });

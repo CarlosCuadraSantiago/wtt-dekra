@@ -20,12 +20,12 @@ export class UsersService {
 
   private hydrate(): User[] {
     if (typeof localStorage === 'undefined') {
-      return MOCK_USERS.map(clone);
+      return [];
     }
     try {
       const raw = localStorage.getItem(this.storageKey);
       if (!raw) {
-        return MOCK_USERS.map(clone);
+        return [];
       }
       const parsed = JSON.parse(raw) as Array<Omit<User, 'lastLogin' | 'createdAt'> & { lastLogin: string | null; createdAt: string }>;
       return parsed.map((u) => ({
@@ -34,7 +34,7 @@ export class UsersService {
         createdAt: new Date(u.createdAt),
       })) as User[];
     } catch {
-      return MOCK_USERS.map(clone);
+      return [];
     }
   }
 
